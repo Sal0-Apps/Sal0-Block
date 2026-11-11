@@ -1,0 +1,73 @@
+name: sal0-block
+services:
+  sponsorblock:
+    container_name: isponsorblocktv
+    image: ghcr.io/dmunozv04/isponsorblocktv:latest
+    network_mode: host
+    restart: unless-stopped
+    init: true
+    privileged: false
+    volumes:
+      - ${ISB_DATA_PATH:-/DATA/AppData/sal0-isponsorblocktv/data}:/app/data
+    environment:
+      TZ: America/Sao_Paulo
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"
+  app:
+    container_name: sal0-block
+    image: ghcr.io/sal0-apps/sal0-block:latest
+    network_mode: bridge
+    restart: unless-stopped
+    init: true
+    privileged: false
+    security_opt:
+      - no-new-privileges:true
+    cpus: 1
+    mem_limit: 256M
+    mem_reservation: 32M
+    pids_limit: 64
+    environment:
+      TZ: America/Sao_Paulo
+      iSPBTV_data_dir: /app/data
+      SPONSORBLOCK_CONTAINER: isponsorblocktv
+      SAL0_PORT: "7860"
+    ports:
+      - "${SAL0_WEB_PORT:-7889}:7860"
+    volumes:
+      - ${ISB_DATA_PATH:-/DATA/AppData/sal0-isponsorblocktv/data}:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+      icon: https://raw.githubusercontent.com/Sal0-Apps/Sal0-Block/main/assets/icon-512.png
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"
+x-casaos:
+  architectures: [amd64, arm64]
+  author: Sal0 Apps
+  developer: Sal0 Apps
+  category: Media
+  main: app
+  port_map: "7889"
+  scheme: http
+  index: /
+  icon: https://raw.githubusercontent.com/Sal0-Apps/Sal0-Block/main/assets/icon-512.png
+  title:
+    custom: Sal0 Block
+    en_us: Sal0 Block
+    pt_br: Sal0 Block
+  tagline:
+    pt_br: Controle o SponsorBlock da sua TV pelo navegador.
+    en_us: Manage SponsorBlock for your TV from your browser.
+  description:
+    pt_br: Interface Sal0 para TVs, categorias e backups. iSponsorBlockTV oficial independente, com atualizações pelo Watchtower.
+    en_us: Sal0 interface for TVs, categories and backups. Independent official iSponsorBlockTV engine with Watchtower updates.
+  version: "1.1.0"
+  store_app_id: sal0-block

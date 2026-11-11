@@ -21,6 +21,7 @@ jobs:
           node --check panel/static/app.js
           bash -n instalar.sh
           docker compose config -q
+          docker compose -f docker-compose-completo.yml config -q
       - name: Browser workflow and mobile layout
         run: |
           python3 -m venv .ci-venv

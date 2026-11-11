@@ -1,23 +1,5 @@
 name: sal0-block
 services:
-  sponsorblock:
-    container_name: isponsorblocktv
-    image: ghcr.io/dmunozv04/isponsorblocktv:latest
-    network_mode: host
-    restart: unless-stopped
-    init: true
-    privileged: false
-    volumes:
-      - ${ISB_DATA_PATH:-/DATA/AppData/sal0-isponsorblocktv/data}:/app/data
-    environment:
-      TZ: America/Sao_Paulo
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
-    logging:
-      driver: json-file
-      options:
-        max-size: 5m
-        max-file: "2"
   app:
     container_name: sal0-block
     image: ghcr.io/sal0-apps/sal0-block:latest
@@ -38,8 +20,9 @@ services:
       SAL0_PORT: "7860"
     ports:
       - "${SAL0_WEB_PORT:-7889}:7860"
+    volumes_from:
+      - container:isponsorblocktv:rw
     volumes:
-      - ${ISB_DATA_PATH:-/DATA/AppData/sal0-isponsorblocktv/data}:/app/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       com.centurylinklabs.watchtower.enable: "true"
@@ -67,7 +50,7 @@ x-casaos:
     pt_br: Controle o SponsorBlock da sua TV pelo navegador.
     en_us: Manage SponsorBlock for your TV from your browser.
   description:
-    pt_br: Interface Sal0 para TVs, categorias e backups. iSponsorBlockTV oficial independente, com atualizações pelo Watchtower.
-    en_us: Sal0 interface for TVs, categories and backups. Independent official iSponsorBlockTV engine with Watchtower updates.
+    pt_br: Painel para o iSponsorBlockTV já instalado. Compartilha automaticamente sua configuração e preserva o motor independente.
+    en_us: Web panel for an existing official iSponsorBlockTV container.
   version: "1.1.0"
   store_app_id: sal0-block

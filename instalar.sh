@@ -36,7 +36,7 @@ task_web_port="${task_web_port:-7889}"
 [[ "$task_web_port" =~ ^[0-9]+$ ]] && ((task_web_port > 0 && task_web_port < 65536)) || { echo "Porta inválida."; exit 1; }
 mkdir -p "$task_data_dir"
 export ISB_DATA_PATH="$task_data_dir" SAL0_WEB_PORT="$task_web_port"
-task_compose_args=(-p sal0-block -f "$task_app_dir/docker-compose.yml")
+task_compose_args=(-p sal0-block -f "$task_app_dir/docker-compose-completo.yml")
 "${task_compose[@]}" "${task_compose_args[@]}" config -q
 echo "Verificando as duas imagens antes da migração…"
 "${task_compose[@]}" "${task_compose_args[@]}" pull
