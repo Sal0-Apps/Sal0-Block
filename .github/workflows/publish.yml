@@ -30,7 +30,7 @@ jobs:
       - name: Build panel for Docker integration
         run: docker build -t sal0-block:ci .
       - name: Test with independent Docker engine
-        run: python3 tests/docker_smoke.py
+        run: sudo python3 tests/docker_smoke.py
   publish:
     needs: test
     if: github.event_name != 'pull_request'
