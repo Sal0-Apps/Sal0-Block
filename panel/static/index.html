@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050b12"><meta name="color-scheme" content="dark light">
+  <title>Sal0 Block</title><link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css"><script defer src="app.js"></script>
+</head>
+<body>
+<div class="app-container">
+  <header class="app-header">
+    <a class="brand" href="./"><img src="icon.svg" width="46" height="46" alt=""><span>Sal0 <strong>Block</strong><small>YouTube na sua TV</small></span></a>
+    <div class="header-actions"><span id="connection" class="connection" role="status">Conectando</span><button id="theme" class="icon-button secondary" type="button" aria-label="Alternar tema" title="Alternar tema">◐</button></div>
+  </header>
+
+  <nav class="nav-tabs" role="tablist" aria-label="Seções">
+    <button role="tab" id="tab-devices" aria-controls="view-devices" aria-selected="true" class="active" data-tab="devices">Dispositivos</button>
+    <button role="tab" id="tab-settings" aria-controls="view-settings" aria-selected="false" tabindex="-1" data-tab="settings">Bloqueios</button>
+    <button role="tab" id="tab-activity" aria-controls="view-activity" aria-selected="false" tabindex="-1" data-tab="activity">Atividade</button>
+  </nav>
+
+  <div id="offline" class="notice error" role="alert" hidden>O painel perdeu a conexão com o servidor. Tentando reconectar…</div>
+  <div id="config-error" class="notice error" role="alert" hidden></div>
+  <section id="view-devices" class="view" role="tabpanel" aria-labelledby="tab-devices">
+    <div class="card hero">
+      <div class="eyebrow"><span class="blue-dot"></span> MAIS CONTEÚDO, MENOS INTERRUPÇÕES</div>
+      <div class="hero-row"><div><h1>Sua TV. Seu ritmo.</h1><p>Vincule o YouTube da sua TV e escolha<br class="desktop-break"> os trechos que você quer pular.</p></div><button id="add-device" class="primary add-button" type="button"><span aria-hidden="true">＋</span> Adicionar TV</button></div>
+      <div class="hero-footer"><span id="engine-badge" class="badge">Carregando</span><span class="hint">Funciona com o app do YouTube aberto na TV.</span></div>
+    </div>
+    <div class="metrics">
+      <div class="metric"><span class="metric-label">Dispositivos vinculados</span><strong id="device-count">—</strong><small>TVs, Fire TV e outros players</small></div>
+      <div class="metric"><span class="metric-label">Categorias selecionadas</span><strong id="category-count">—</strong><small>Você escolhe o que pular</small></div>
+      <div class="metric"><span class="metric-label">Proteção</span><strong id="protection-label" class="metric-status">—</strong><small id="uptime">Aguardando conexão</small></div>
+    </div>
+    <div class="section-heading"><div><h2>Seus dispositivos</h2><p>Um código para cada TV. Configure uma vez e pronto.</p></div><button id="refresh" class="text-button" type="button">↻ Atualizar</button></div>
+    <div id="device-list" class="device-grid" aria-live="polite"></div>
+    <div id="empty-devices" class="card empty-state" hidden><div class="empty-icon" aria-hidden="true">▻</div><h3>Vamos conectar sua primeira TV?</h3><p>No YouTube da TV, abra <strong>Configurações → Vincular com código da TV</strong>.<br>Depois toque em Adicionar TV e informe os 12 números.</p><button id="empty-add" class="secondary" type="button">Adicionar primeira TV</button></div>
+    <details class="card transfer"><summary>Já usa o iSponsorBlockTV?</summary><p>Importe seu <code>config.json</code> para aproveitar as TVs e preferências já configuradas. O painel e o motor oficial compartilham essa configuração.</p><div class="button-row"><button class="secondary import-trigger" type="button">Importar configuração</button><a class="button secondary" href="api/export" download>Baixar backup</a></div></details>
+  </section>
+
+  <section id="view-settings" class="view" role="tabpanel" aria-labelledby="tab-settings" hidden>
+    <form id="settings-form">
+      <div class="card">
+        <div class="section-heading"><div><div class="eyebrow">DO SEU JEITO</div><h1>Escolha o que pular</h1><p>As categorias usam marcações da comunidade SponsorBlock.</p></div><span id="selected-label" class="tag">— selecionadas</span></div>
+        <div id="categories" class="category-grid"></div>
+        <div class="note">Em videoclipes, mantenha “Partes sem música” desmarcado se quiser assistir às cenas e aos diálogos.</div>
+      </div>
+      <div class="card settings-card">
+        <h2>Anúncios do YouTube</h2><p>Escolha como lidar com os anúncios exibidos pelo próprio YouTube.</p>
+        <label class="switch-row"><span><strong>Silenciar anúncios</strong><small>Retoma o som quando o anúncio termina.</small></span><input id="mute_ads" type="checkbox" role="switch"></label>
+        <label class="switch-row"><span><strong>Acionar “Pular anúncio”</strong><small>Pula assim que o YouTube libera o botão.</small></span><input id="skip_ads" type="checkbox" role="switch"></label>
+        <p class="hint">Anúncios sem opção de pular continuam até o fim.</p>
+      </div>
+      <details class="card advanced"><summary>Opções avançadas <span>Reprodução, canais e conexão</span></summary>
+        <div class="two-col"><label>Duração mínima do trecho, em segundos<input id="minimum_skip_length" type="number" min="0" max="600" step="0.1" required><small>Use 0 para aceitar trechos de qualquer duração.</small></label><label>Nome exibido na conexão com a TV<input id="join_name" maxlength="64" required></label></div>
+        <label class="switch-row"><span><strong>Reprodução automática</strong><small>Permite continuar para o próximo vídeo.</small></span><input id="auto_play" type="checkbox" role="switch"></label>
+        <label class="switch-row"><span><strong>Informar pulos ao SponsorBlock</strong><small>Envia o identificador do trecho para contabilizar o uso.</small></span><input id="skip_count_tracking" type="checkbox" role="switch"></label>
+        <div class="option-group"><h3>Canais permitidos</h3><p class="hint">Nesses canais, os trechos SponsorBlock são mantidos. Requer uma chave da API do YouTube.</p><label>Chave da API do YouTube<input id="apikey" type="password" autocomplete="off" maxlength="256" placeholder="Opcional"><small id="key-hint">Necessária apenas para permitir canais.</small></label><label class="check"><input id="clear_api_key" type="checkbox"> Apagar a chave salva</label><label>Lista de canais<textarea id="channel_whitelist" rows="3" placeholder="UCxxxxxxxxxxxxxxxxxxxxxx | Nome do canal"></textarea><small>Uma linha por canal: ID de 24 caracteres começando com UC, seguido de | e do nome.</small></label></div>
+        <div class="option-group"><h3>Conexão</h3><label>Endereço da API SponsorBlock<input id="sponsorblock_api_url" type="url" required></label><label class="switch-row"><span><strong>Usar proxy de saída do container</strong><small>Usa HTTP_PROXY/HTTPS_PROXY do ambiente. Pode deixar desligado ao usar NGINX Proxy Manager.</small></span><input id="use_proxy" type="checkbox" role="switch"></label></div>
+      </details>
+      <div class="save-bar"><span id="save-state" role="status">Tudo salvo</span><button id="save-settings" class="primary" type="submit" disabled>Salvar e aplicar</button></div>
+    </form>
+  </section>
+
+  <section id="view-activity" class="view" role="tabpanel" aria-labelledby="tab-activity" hidden>
+    <div class="card service-card"><div class="section-heading"><div><div class="eyebrow">EM SEGUNDO PLANO</div><h1>Controle da proteção</h1><p id="service-description">Carregando o estado do serviço…</p></div><span id="activity-badge" class="badge">—</span></div><div class="button-row"><button id="toggle-service" class="primary" type="button">Pausar proteção</button><button id="restart-service" class="secondary" type="button">Reiniciar motor</button><a href="api/export" download class="button secondary">Baixar backup</a><button class="secondary import-trigger" type="button">Importar backup</button></div><p id="engine-error" class="notice error" hidden></p></div>
+    <div class="card activity-card"><div class="section-heading"><div><h2>Atividade recente</h2><p>Registros recentes do container oficial e desta sessão do painel.</p></div><span class="live"><span></span> Atualização automática</span></div><div id="activity-list" aria-live="off"></div><p id="empty-activity" class="hint">Os próximos eventos aparecerão aqui.</p></div>
+  </section>
+  <footer class="app-footer"><span>Sal0 Apps <span class="footer-separator">/</span> Block</span><span>Motor iSponsorBlockTV <span class="footer-separator">·</span> <span id="version">1.1.0</span></span></footer>
+</div>
+
+<dialog id="pair-dialog"><form id="pair-form"><div class="dialog-heading"><div><div class="eyebrow">CONECTAR DISPOSITIVO</div><h2>Adicione sua TV</h2></div><button type="button" class="icon-button close-dialog" aria-label="Fechar">×</button></div><div class="steps"><span>1</span><p>Na TV, abra o <strong>YouTube → Configurações → Vincular com código da TV</strong>.</p></div><div class="steps"><span>2</span><p>Mantenha essa tela aberta e digite o código abaixo.</p></div><label>Código da TV<input id="pair-code" class="code-input" type="text" inputmode="numeric" autocomplete="off" placeholder="000 000 000 000" maxlength="15" required pattern="[0-9 -]{12,15}" aria-describedby="pair-hint"><small id="pair-hint">Use os 12 números exibidos no YouTube da TV.</small></label><label>Nome do dispositivo <small>(opcional)</small><input id="pair-name" maxlength="80" placeholder="Ex.: Fire TV do quarto" autocomplete="off"></label><p id="pair-error" class="notice error" role="alert" hidden></p><button id="pair-submit" class="primary full" type="submit">Vincular TV</button><p class="hint center">Nenhum login na sua conta Google é necessário.</p></form></dialog>
+
+<dialog id="edit-dialog"><form id="edit-form"><div class="dialog-heading"><h2>Editar dispositivo</h2><button type="button" class="icon-button close-dialog" aria-label="Fechar">×</button></div><label>Nome da TV<input id="edit-name" maxlength="80" required></label><details><summary>Ajuste de sincronização</summary><label>Compensação, em milissegundos<input id="edit-offset" type="number" min="-30000" max="30000" step="1"><small>0 mantém o padrão. Um valor positivo antecipa o comando de pular.</small></label></details><p id="edit-error" class="notice error" role="alert" hidden></p><button id="edit-submit" type="submit" class="primary full">Salvar dispositivo</button></form></dialog>
+
+<dialog id="confirm-dialog"><div class="dialog-heading"><h2 id="confirm-title">Confirmar alteração</h2><button type="button" class="icon-button close-dialog" aria-label="Fechar">×</button></div><p id="confirm-message"></p><p id="confirm-error" class="notice error" role="alert" hidden></p><div class="button-row end"><button type="button" class="secondary close-dialog">Cancelar</button><button id="confirm-action" type="button" class="primary">Confirmar</button></div></dialog>
+<input id="import-file" type="file" accept=".json,application/json" hidden>
+<div id="toast" role="status" hidden></div>
+</body></html>
