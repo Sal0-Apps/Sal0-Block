@@ -79,7 +79,7 @@ try:
             page.set_viewport_size({"width": width, "height": 844})
             for section in ("devices", "settings", "activity"):
                 page.locator("#tab-" + section).click()
-                assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), (width, section)
+                assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), (width, section, page.locator("body *").evaluate_all("els => els.filter(el => el.getBoundingClientRect().right > innerWidth + 1).map(el => ({tag:el.tagName,cls:el.className,text:el.textContent.slice(0,80)})).slice(0,12)"))
                 page.screenshot(path=str(shots / f"mobile-{width}-{section}.png"), full_page=True)
             page.locator("#tab-devices").click()
             page.locator("#add-device").click()
