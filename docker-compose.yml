@@ -52,5 +52,5 @@ x-casaos:
   description:
     pt_br: Painel para o iSponsorBlockTV já instalado. Compartilha automaticamente sua configuração e preserva o motor independente.
     en_us: Web panel for an existing official iSponsorBlockTV container.
-  version: "1.1.0"
+  version: "1.2.0"
   store_app_id: sal0-block

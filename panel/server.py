@@ -16,7 +16,7 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 ROOT = Path(__file__).resolve().parent
 CATEGORIES = [
     ("sponsor", "Patrocínios", "Publicidade inserida pelo criador."),
@@ -328,6 +328,8 @@ class Handler(BaseHTTPRequestHandler):
         else:
             static = {"/": ("index.html", "text/html; charset=utf-8"),
                       "/style.css": ("style.css", "text/css; charset=utf-8"),
+                      "/appearance.css": ("appearance.css", "text/css; charset=utf-8"),
+                      "/appearance.js": ("appearance.js", "application/javascript; charset=utf-8"),
                       "/app.js": ("app.js", "application/javascript; charset=utf-8"),
                       "/icon.svg": ("icon.svg", "image/svg+xml")}
             if path not in static:
