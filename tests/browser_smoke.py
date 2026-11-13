@@ -87,6 +87,8 @@ try:
             page.screenshot(path=str(shots / f"mobile-{width}-pair.png"), full_page=True)
             page.locator("#pair-dialog .close-dialog").click()
         page.locator("#theme").click()
+        page.locator("[data-sal0-mode-choice=light]").click()
+        page.locator("[data-sal0-close]").click()
         expect(page.locator("body")).to_have_class("light")
         page.screenshot(path=str(shots / "mobile-light.png"), full_page=True)
         page.reload()

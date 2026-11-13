@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#050b12"><meta name="color-scheme" content="dark light">
   <title>Sal0 Block</title><link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css"><script defer src="app.js"></script>
-<link rel="stylesheet" href="appearance.css?v=glass-1.2.0"><script defer src="appearance.js?v=glass-1.2.0"></script></head>
+<link rel="stylesheet" href="appearance.css?v=glass-1.2.1"><script defer src="appearance.js?v=glass-1.2.1"></script></head>
 <body>
 <div class="app-container">
   <header class="app-header">
@@ -67,7 +67,7 @@
     <div class="card service-card"><div class="section-heading"><div><div class="eyebrow">EM SEGUNDO PLANO</div><h1>Controle da proteção</h1><p id="service-description">Carregando o estado do serviço…</p></div><span id="activity-badge" class="badge">—</span></div><div class="button-row"><button id="toggle-service" class="primary" type="button">Pausar proteção</button><button id="restart-service" class="secondary" type="button">Reiniciar motor</button><a href="api/export" download class="button secondary">Baixar backup</a><button class="secondary import-trigger" type="button">Importar backup</button></div><p id="engine-error" class="notice error" hidden></p></div>
     <div class="card activity-card"><div class="section-heading"><div><h2>Atividade recente</h2><p>Registros recentes do container oficial e desta sessão do painel.</p></div><span class="live"><span></span> Atualização automática</span></div><div id="activity-list" aria-live="off"></div><p id="empty-activity" class="hint">Os próximos eventos aparecerão aqui.</p></div>
   </section>
-  <footer class="app-footer"><span>Sal0 Apps <span class="footer-separator">/</span> Block</span><span>Motor iSponsorBlockTV <span class="footer-separator">·</span> <span id="version">1.2.0</span></span></footer>
+  <footer class="app-footer"><span>Sal0 Apps <span class="footer-separator">/</span> Block</span><span>Motor iSponsorBlockTV <span class="footer-separator">·</span> <span id="version">1.2.1</span></span></footer>
 </div>
 
 <dialog id="pair-dialog"><form id="pair-form"><div class="dialog-heading"><div><div class="eyebrow">CONECTAR DISPOSITIVO</div><h2>Adicione sua TV</h2></div><button type="button" class="icon-button close-dialog" aria-label="Fechar">×</button></div><div class="steps"><span>1</span><p>Na TV, abra o <strong>YouTube → Configurações → Vincular com código da TV</strong>.</p></div><div class="steps"><span>2</span><p>Mantenha essa tela aberta e digite o código abaixo.</p></div><label>Código da TV<input id="pair-code" class="code-input" type="text" inputmode="numeric" autocomplete="off" placeholder="000 000 000 000" maxlength="15" required pattern="[0-9 -]{12,15}" aria-describedby="pair-hint"><small id="pair-hint">Use os 12 números exibidos no YouTube da TV.</small></label><label>Nome do dispositivo <small>(opcional)</small><input id="pair-name" maxlength="80" placeholder="Ex.: Fire TV do quarto" autocomplete="off"></label><p id="pair-error" class="notice error" role="alert" hidden></p><button id="pair-submit" class="primary full" type="submit">Vincular TV</button><p class="hint center">Nenhum login na sua conta Google é necessário.</p></form></dialog>
