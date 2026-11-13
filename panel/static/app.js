@@ -129,6 +129,7 @@ function accept(s,{settings=false}={}){
   $('engine-error').textContent=e.last_error||'';$('engine-error').hidden=!e.last_error;
   $('toggle-service').disabled=e.state==='unavailable';$('restart-service').disabled=e.state==='unavailable';
   renderDevices(s);renderLogs(e.logs);
+  window.Sal0Reference?.state({engine:e.state,events:[...e.logs].reverse().slice(0,3).map(event=>({message:translateLog(event.message)}))});
   if(initial||settings||(!dirty&&formRevision!==s.revision))populateSettings(s);
 }
 async function refresh(){
